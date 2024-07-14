@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon main.js",
-    "start": "nodemon upload.js"
+    "start": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "mrudulkolambe",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.614.0",
+    "@aws-sdk/credential-provider-ini": "^3.614.0",
     "@aws-sdk/s3-request-presigner": "^3.614.0",
     "aws-sdk": "^2.1659.0",
     "body-parser": "^1.20.2",
