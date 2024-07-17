@@ -92,6 +92,8 @@ app.post("/multi-upload", upload.array("files", 10), async (req, res) => {
         return new Promise((resolve, reject) => {
           ffmpeg(tempFilePath)
             .outputOptions([
+              "-preset", "veryfast",
+              "-threads", "4",
               "-hls_time", "10",
               "-hls_playlist_type", "vod",
               "-hls_segment_filename", `${outputDir}/%03d.ts`
