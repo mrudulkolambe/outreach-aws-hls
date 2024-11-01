@@ -141,6 +141,33 @@ app.post("/multi-upload", upload.array("files", 10), async (req, res) => {
   }
 });
 
+app.post("/story-upload", upload.array("files"), async (req, res) => {
+  try {
+    const file = req.files[0];
+    const timestamp = Date.now();
+
+    const ext = path.extname(file.originalname).toLowerCase();
+    const fileName = path.basename(file.originalname, ext);
+    let response;
+
+    if (ext === ".jpg" || ext === ".jpeg" || ext === ".png") {
+      const imageUrl = await uploadToS3(file.buffer, `story/${timestamp}/images/${fileName}${ext}`);
+      response = { type: "image", url: imageUrl };
+    } else if (ext === ".mp4" || ext === ".mov") {
+      const videoUrl = await uploadToS3(file.buffer, `story/${timestamp}/videos/${fileName}${ext}`);
+      response = { type: "video", url: videoUrl };
+    } else {
+      response = { type: "error", message: "Unsupported file type", fileName: file.originalname };
+    }
+
+
+    res.json({ status: "success", response: response });
+  } catch (err) {
+    console.error("Error processing upload:", err);
+    res.status(500).json({ status: "error", message: "File upload failed" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on: ${PORT}`);
 });
